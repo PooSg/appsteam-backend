@@ -18,6 +18,8 @@ app.use('/api/cart',   require('./routes/cart'))
 app.use('/api/orders', require('./routes/orders'))
 app.use('/api/users',  require('./routes/users'))
 
+app.use('/api/wishlist', require('./routes/wishlist'))
+
 // ── Health check ──────────────────────────────────────────────────────────────
 app.get('/', (req, res) => {
   res.json({ message: 'Appsteam API is running!' })
