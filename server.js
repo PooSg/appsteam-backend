@@ -19,6 +19,7 @@ app.use('/api/orders', require('./routes/orders'))
 app.use('/api/users',  require('./routes/users'))
 
 app.use('/api/wishlist', require('./routes/wishlist'))
+app.use('/api/admin', require('./routes/admin'))
 
 // ── Health check ──────────────────────────────────────────────────────────────
 app.get('/', (req, res) => {
