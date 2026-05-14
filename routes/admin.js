@@ -11,17 +11,17 @@ router.get('/orders', auth, isAdmin, async (req, res) => {
       `SELECT o.order_id, o.total_amount, o.status, o.created_at,
               u.username, u.email,
               p.method AS payment_method
-       FROM \`order\` o
-       JOIN user u ON o.user_id = u.user_id
-       LEFT JOIN payment p ON o.order_id = p.order_id
+       FROM \`ORDERS\` o
+       JOIN \`USER\` u ON o.user_id = u.user_id
+       LEFT JOIN PAYMENT p ON o.order_id = p.order_id
        ORDER BY o.created_at DESC`
     )
 
     for (const order of orders) {
       const [items] = await db.query(
         `SELECT oi.price_at_purchase, g.title, g.cover_image
-         FROM order_item oi
-         JOIN game g ON oi.game_id = g.game_id
+         FROM ORDER_ITEM oi
+         JOIN GAME g ON oi.game_id = g.game_id
          WHERE oi.order_id = ?`,
         [order.order_id]
       )
