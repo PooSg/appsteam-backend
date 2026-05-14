@@ -88,5 +88,20 @@ router.delete('/:itemId', auth, async (req, res) => {
     res.status(500).json({ message: 'Server error' })
   }
 })
+// PUT /api/cart/:itemId — update quantity
+router.put('/:itemId', auth, async (req, res) => {
+  const { quantity } = req.body
+  if (quantity < 1) return res.status(400).json({ message: 'Quantity must be at least 1' })
+  try {
+    await db.query(
+      `UPDATE CART_ITEM ci JOIN CART c ON ci.cart_id = c.cart_id
+       SET ci.quantity = ? WHERE ci.cart_item_id = ? AND c.user_id = ?`,
+      [quantity, req.params.itemId, req.user.user_id]
+    )
+    res.json({ message: 'Quantity updated' })
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' })
+  }
+})
 
 module.exports = router
