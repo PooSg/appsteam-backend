@@ -70,11 +70,12 @@ router.get('/', auth, async (req, res) => {
   try {
     const [orders] = await db.query(
       `SELECT o.order_id, o.total_amount, o.status, o.created_at,
-              p.method AS payment_method
-       FROM \`ORDERS\` o
-       LEFT JOIN PAYMENT p ON o.order_id = p.order_id
-       WHERE o.user_id = ?
-       ORDER BY o.created_at DESC`,
+        o.delivery_name, o.delivery_street, o.delivery_city, o.delivery_phone,
+        p.method AS payment_method
+ FROM \`ORDERS\` o
+ LEFT JOIN PAYMENT p ON o.order_id = p.order_id
+ WHERE o.user_id = ?
+ ORDER BY o.created_at DESC`
       [req.user.user_id]
     )
 
