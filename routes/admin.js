@@ -49,5 +49,16 @@ router.patch('/orders/:id/status', auth, isAdmin, async (req, res) => {
     res.status(500).json({ message: 'Server error' })
   }
 })
-
+// DELETE order (admin only)
+router.delete('/orders/:id', auth, isAdmin, async (req, res) => {
+  try {
+    await db.query('DELETE FROM ORDER_ITEM WHERE order_id = ?', [req.params.id])
+    await db.query('DELETE FROM PAYMENT WHERE order_id = ?', [req.params.id])
+    await db.query('DELETE FROM ORDERS WHERE order_id = ?', [req.params.id])
+    res.json({ message: 'Order deleted' })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ message: 'Server error' })
+  }
+})
 module.exports = router
