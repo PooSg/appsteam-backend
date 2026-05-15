@@ -40,7 +40,7 @@ router.patch('/orders/:id/status', auth, isAdmin, async (req, res) => {
   const { status } = req.body
   try {
     await db.query(
-      'UPDATE `order` SET status = ? WHERE order_id = ?',
+      'UPDATE `ORDERS` SET status = ? WHERE order_id = ?',
       [status, req.params.id]
     )
     res.json({ message: 'Order status updated' })
