@@ -5,7 +5,7 @@ const auth    = require('../middleware/auth')
 
 // POST /api/orders/checkout  — create order from cart
 router.post('/checkout', auth, async (req, res) => {
-  const { payment_method } = req.body
+  const { payment_method, address } = req.body
   if (!payment_method)
     return res.status(400).json({ message: 'Payment method is required' })
 
@@ -28,8 +28,8 @@ router.post('/checkout', auth, async (req, res) => {
 
     // 3. Create order
     const [orderResult] = await db.query(
-      'INSERT INTO `ORDERS` (user_id, total_amount, status) VALUES (?, ?, ?)',
-      [req.user.user_id, total, 'completed']
+      'INSERT INTO `ORDERS` (user_id, total_amount, status, delivery_name, delivery_street, delivery_city, delivery_phone) VALUES (?, ?, ?, ?, ?, ?, ?)',
+[req.user.user_id, total, 'completed', address?.name || '', address?.street || '', address?.city || '', address?.phone || '']
     )
     const orderId = orderResult.insertId
 
