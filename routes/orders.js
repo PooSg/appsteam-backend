@@ -68,16 +68,16 @@ router.post('/checkout', auth, async (req, res) => {
 // GET /api/orders  — get current user's order history
 router.get('/', auth, async (req, res) => {
   try {
-    const [orders] = await db.query(
-      `SELECT o.order_id, o.total_amount, o.status, o.created_at,
-        o.delivery_name, o.delivery_street, o.delivery_city, o.delivery_phone,
-        p.method AS payment_method
- FROM \`ORDERS\` o
- LEFT JOIN PAYMENT p ON o.order_id = p.order_id
- WHERE o.user_id = ?
- ORDER BY o.created_at DESC`
-      [req.user.user_id]
-    )
+ const [orders] = await db.query(
+  `SELECT o.order_id, o.total_amount, o.status, o.created_at,
+          o.delivery_name, o.delivery_street, o.delivery_city, o.delivery_phone,
+          p.method AS payment_method
+   FROM ORDERS o
+   LEFT JOIN PAYMENT p ON o.order_id = p.order_id
+   WHERE o.user_id = ?
+   ORDER BY o.created_at DESC`,
+  [req.user.user_id]
+)
 
     // Get items for each order
     for (const order of orders) {
